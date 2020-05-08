@@ -1,0 +1,25 @@
+{
+  "name": "hamsterwars",
+  "version": "1.0.0",
+  "description": "**Ditt projekt är att bygga en backend till kommande webplatsen HAMSTERWARS.** \r Webplatsen är en spinoff på [Kittenwar](http://www.kittenwar.com), en hemsida där matcher mellan två bilder slumpas fram och publiken röstar på den de finner gulligast. Poäng ska räknas, listor ska sammanställas.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iths-anna-boberg/hamsterwars.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iths-anna-boberg/hamsterwars/issues"
+  },
+  "homepage": "https://github.com/iths-anna-boberg/hamsterwars#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "firebase-admin": "^8.12.0",
+    "firestore-export-import": "^0.5.0"
+  }
+}
