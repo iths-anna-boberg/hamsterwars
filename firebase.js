@@ -1,9 +1,11 @@
 const admin = require("firebase-admin");
 const serviceAccount = require('serviceaccount.json');
+const firebaseConfig = require('./config.js');
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://hamsterwarz.firebaseio.com"
+  databaseURL: firebaseConfig.databaseURL
 });
 
 const db = admin.firestore();
