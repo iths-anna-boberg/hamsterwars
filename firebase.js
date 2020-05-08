@@ -3,12 +3,14 @@ const serviceAccount = require('./serviceaccount.json');
 const firebaseConfig = require('./config.js');
 
 
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: firebaseConfig.databaseURL
 });
 
 const db = admin.firestore();
+const fieldValue = admin.firestore.FieldValue;
 
 
-module.exports = { db }
+module.exports = { db, fieldValue }

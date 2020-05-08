@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = new Router();
-const { db } = require ('./../firebase');
+const { db, fieldValue } = require ('./../firebase');
 
 
 //GET Returnerar en array med samtliga hamsterobject från firestore
@@ -25,27 +25,37 @@ router.get('/', async (req, res)=>{
 })
 
 //GET RANDOM Returnerar ett slumpat hamsterobject från databasen.
+//skalbar med separat counter, se nedan beskrivning
 
 
 router.get('/random', async (req, res)=>{
-    let randomId = Math.floor(Math.random()*41); //förutsätter förstås att det alltid är 40 st hamstrar, får ändra sedan
-
+    
     let result ={} //obj behövs för att kunna skicka resultat
     try{
+        let getCounter = await db //har en separat collection med counter för att slippa hämta hem HELA hamster-collection varje gång
+        .collection('counter')
+        .doc('hamster')
+        .get()
+        .then(doc => doc.data())
         
-        let querySnapshot = await db.collection('hamsters').where('id', '==', randomId).get();
+        let randomId = Math.floor(Math.random()*getCounter.hamsterCount+1); //skapa random utifrån hur många som finns i min separata counter
+        
+        let querySnapshot = await db
+        .collection('hamsters')
+        .where('id', '==', randomId) //så vi hämtar bara ett random id och inte hela collection för att sedan slumpa fram något
+        .get();
         querySnapshot.forEach(el=>{
             result = el.data();
         })
         res.send(result);
         
     }catch(err){
-
+        
         res.status(500).send(err)
         
     }
-
-   
+    
+    
 })
 
 
@@ -63,7 +73,7 @@ router.get('/:id', async (req, res)=>{
         res.send(result);
         
     }catch(err){
-
+        
         res.status(500).send(err)
         
     }
@@ -72,22 +82,22 @@ router.get('/:id', async (req, res)=>{
 })
 
 router.put('/:id/results', async (req, res)=>{
-//behöver säkra upp detta så att om hamstern vinner kan man inte samtidigt förlora
+    //behöver säkra upp detta så att om hamstern vinner kan man inte samtidigt förlora
     try{
-
-
+        
+        
         let id = req.params.id*1;
         let hamster;
-    
+        
         let querySnapshot = await db.collection('hamsters').where("id", "==", id).get();
         console.log(req.body)
         querySnapshot.forEach(el=>{
             hamster = el.data();
-    
+            
             hamster.wins += parseInt(req.body.wins);
             hamster.defeats += parseInt(req.body.defeats);
             hamster.games++;
-    
+            
             db.collection('hamsters')
             .doc(el.id)
             .set(hamster)
@@ -99,11 +109,34 @@ router.put('/:id/results', async (req, res)=>{
         
     }
     catch(err){
-        res.status(500).send(err)
+        res.status(500).send(err);
     }
-
+    
     //upppdatera total games nånstans
+    
+})
 
+//POST NY hamster
+router.post('/', async (req, res)=>{
+    
+    try{
+        await db.collection('hamsters')
+        .doc()
+        .set(req.body)
+        .then(console.log('hamster added'))
+        await db.collection('counter') //när vi lägger till en hamster måste min counter uppdateras så att GET random-metoden blir rätt
+        .doc('hamster')
+        .update({hamsterCount : fieldValue.increment(1)})
+        .then(console.log('counter updated'))
+        
+        res.send({msg: 'hamster added and counter updated'})
+        
+        
+        
+    }catch(err){
+        res.status(500).send(err);
+    }
+    
 })
 
 
