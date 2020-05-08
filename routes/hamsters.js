@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = new Router();
 const { db } = require ('./../firebase');
 
+
 //GET Returnerar en array med samtliga hamsterobject från firestore
 
 router.get('/', async (req, res)=>{
@@ -22,6 +23,31 @@ router.get('/', async (req, res)=>{
     }
     
 })
+
+//GET RANDOM Returnerar ett slumpat hamsterobject från databasen.
+
+
+router.get('/random', async (req, res)=>{
+    let randomId = Math.floor(Math.random()*41); //förutsätter förstås att det alltid är 40 st hamstrar, får ändra sedan
+
+    let result ={} //obj behövs för att kunna skicka resultat
+    try{
+        
+        let querySnapshot = await db.collection('hamsters').where('id', '==', randomId).get();
+        querySnapshot.forEach(el=>{
+            result = el.data();
+        })
+        res.send(result);
+        
+    }catch(err){
+
+        res.status(500).send(err)
+        
+    }
+
+   
+})
+
 
 //GET ID Returnerar ett objekt utifrån hamsterns id
 
@@ -80,11 +106,6 @@ router.put('/:id/results', async (req, res)=>{
 
 })
 
-//GET RANDOM Returnerar ett slumpat hamsterobject från databasen.
 
-router.get('/random', async (req, res)=>{
-    console.log('random request received')
-    res.send({msg : 'just testing'})
-})
 
 module.exports = router;
