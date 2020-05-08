@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const serviceAccount = require('serviceaccount.json');
+const serviceAccount = require('./serviceaccount.json');
 const firebaseConfig = require('./config.js');
 
 
