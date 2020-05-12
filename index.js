@@ -19,6 +19,10 @@ app.use('/games', gamesRoute);
 const statsRoute = require('./routes/stats');
 app.use('/stats', statsRoute);
 
+const assetsRoute = require('./routes/assets');
+app.use('/assets', assetsRoute);
+
+
 app.listen(3000, ()=>{
     console.log('Server up and running @ port 3000');
     })
