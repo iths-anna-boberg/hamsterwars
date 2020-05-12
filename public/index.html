@@ -7,6 +7,38 @@
 </head>
 <body>
     <h1>Hamsterwars</h1>
-    <p>Soon ...</p>
-</body>
-</html>
+    <form encType="multipart/form-data">
+        <input type="file" name="photo" id="photo-upload">
+        <button>Upload a hamsterpic!</button>
+    </form>
+    
+    <script> 
+            
+            document.querySelector('button').addEventListener('click', (e)=>{
+                e.preventDefault();
+                
+                let img = document.querySelector('#photo-upload').files[0];
+                console.log(img)
+                let formData = new FormData();
+                formData.append('photo', img);
+                
+                let resp = fetch('/assets', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(resp=>resp.json())
+                .then((resp)=>{
+                    console.log(resp)
+                })
+                .catch(err=>console.error(err));
+                // let response = await fetch('/assets/', {
+                    //     method: 'POST',
+                    //     body: formData,
+                    // })
+                    // console.log(response)
+                    // let result = await response.json();
+                    // console.log(result)
+                })
+            </script>
+        </body>
+        </html>
