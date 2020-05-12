@@ -82,7 +82,6 @@ router.get('/:id', async (req, res)=>{
 })
 
 router.put('/:id/results', async (req, res)=>{
-    //behöver säkra upp detta så att om hamstern vinner kan man inte samtidigt förlora
     try{
         
         
@@ -112,7 +111,6 @@ router.put('/:id/results', async (req, res)=>{
         res.status(500).send(err);
     }
     
-    //upppdatera total games nånstans
     
 })
 

@@ -27,6 +27,7 @@ router.get('/total', async (req,res)=>{
 
 
 //GET topp tre favoritmat bland vinnare
+//om samma mat förekommer fler gånger tas den bort
 
 router.get('/breakfastofchampions', async (req, res)=>{
 
