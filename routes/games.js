@@ -42,6 +42,27 @@ router.post('/', async (req, res)=>{
 
 })
 
+//GET alla matcher
+
+router.get('/', async (req, res)=>{
+
+    try{
+
+        let games =[];
+
+        const fetchGame = await db.collection('games').get();
+
+        fetchGame.forEach(game =>games.push(game.data()))
+
+        res.status(200).send(games);
+
+    }catch(err){
+        res.status(500).send(err);
+    }
+
+
+})
+
 
 
 
