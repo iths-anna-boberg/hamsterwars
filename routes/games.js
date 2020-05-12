@@ -3,15 +3,8 @@ const router = new Router();
 const { db, fieldValue } = require ('./../firebase');
 
 
-/*POST Sparar en match med formatet 
-{   timeStamp: Date, 
-    contestants: 
-        [{ hamsterobject },
-         { hamsterobject } ]
-}
----dock framgår det inte vem som är vinnare enligt den instruktionen? 
-eller jag döper dem till vinnare och förlorare?
-*/
+//POST Sparar en match
+
 router.post('/', async (req, res)=>{
     let date = new Date();
     let d = date.getDate();
@@ -22,9 +15,11 @@ router.post('/', async (req, res)=>{
         await db.collection('games')
         .doc()
         .set({
+            id: fieldValue.increment(1),
             timestamp: timeStamp,
+            contestants: [req.body.hamsterOne, req.body.hamsterTwo],
             winner: req.body.winner,
-            loser: req.body.loser
+            
         })
 
         await db.collection('counter') //separat collection för att räkna antal games, se router för stats
