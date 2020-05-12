@@ -17,22 +17,17 @@ router.get('/:filename', async (req, res)=>{
         .file(`hamsters/${req.params.filename}`)
         .download()
         
-        // fetchImg.pipe(res)
-        console.log(fetchImg)
-        let pic = Buffer.concat(fetchImg)
+        // console.log(fetchImg)
+        let pic = Buffer.concat(fetchImg)//tack johan för denna mirakelkod som omvandlar buffer till jpg
         res.status(200).contentType('jpeg').send(pic) 
-       
-
-       
     
-        
-        
-        
-        
     }catch(err){
         res.status(500).send(err)
     }
 })
+
+//POST posta bild på hamster//
+
 
 
 
