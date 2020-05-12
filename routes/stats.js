@@ -25,4 +25,26 @@ router.get('/total', async (req,res)=>{
 
 })
 
+
+//GET topp tre favoritmat bland vinnare
+
+router.get('/breakfastofchampions', async (req, res)=>{
+
+    const topThree = await db.collection('hamsters').orderBy('wins', 'desc').limit(3).get();
+
+    let hamsters = [];
+    let favFoods = [];
+
+    topThree.forEach(hamster=>hamsters.push(hamster.data()));
+
+    for(hamster of hamsters){
+        if(!favFoods.includes(hamster.favFood)){
+            favFoods.push(hamster.favFood)
+
+        }
+        
+    }
+    res.send({winnersEat: favFoods})
+})
+
 module.exports = router;
