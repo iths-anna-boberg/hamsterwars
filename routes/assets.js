@@ -30,9 +30,9 @@ router.get('/:filename', async (req, res)=>{
 
 //POST posta bild på hamster//
 router.post('/', async (req,res)=>{
-    console.log(req.files.photo)
+    console.log(req.files)
     try{
-
+        //om inget finns bifogat:
         if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).send('No files were uploaded.');
           }
@@ -54,6 +54,8 @@ router.post('/', async (req,res)=>{
     }
 
 })
+
+
 
 
 
