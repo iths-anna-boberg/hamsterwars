@@ -80,31 +80,37 @@ router.get('/:id', async (req, res)=>{
     
     
 })
-
+//Skicka in uppdatering om att hamster vunnit eller förlorat en match.
+//OBS! Skicka bara in id + antingen wins eller defeats.
 router.put('/:id/results', async (req, res)=>{
     try{
         
         
         let id = req.params.id*1;
         let hamster;
+        let docId;
         
         let querySnapshot = await db.collection('hamsters').where("id", "==", id).get();
-        console.log(req.body)
+        
         querySnapshot.forEach(el=>{
             hamster = el.data();
-            
-            hamster.wins += parseInt(req.body.wins);
-            hamster.defeats += parseInt(req.body.defeats);
-            hamster.games++;
-            
-            db.collection('hamsters')
-            .doc(el.id)
-            .set(hamster)
-            .then(res.send({msg: 'ok'}))
-            .catch(err => {throw err});
-            
-            
+            docId = el.id; //hämta ut dokumentid på hamster som ska uppdateras
         })
+        //Kolla om hamstern vunnit eller förlorat
+        if(req.body.wins === undefined){ //om det inte skickats in att den vunnit har den förlorat
+            db.collection('hamsters')
+            .doc(docId)
+            .update({defeats : fieldValue.increment(1), games: fieldValue.increment(1)})
+            .then(res.send({msg: 'defeated hamster was updated'}))
+        .catch(err => {throw err});
+        }
+        if(req.body.defeats === undefined){//om det inte skickas in att den förlorat har den vunnit
+            db.collection('hamsters')
+            .doc(docId)
+            .update({wins : fieldValue.increment(1), games: fieldValue.increment(1)})
+            .then(res.send({msg: 'winning hamster was updated'}))
+        .catch(err => {throw err});
+        }
         
     }
     catch(err){
