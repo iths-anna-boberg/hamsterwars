@@ -18,12 +18,16 @@
                 e.preventDefault();
                 
                 let img = document.querySelector('#photo-upload').files[0];
-                console.log(img)
                 let formData = new FormData();
                 formData.append('photo', img);
                 
+                
+                //OBS Lägg in apinyckel här innan test
                 let resp = fetch('/assets', {
                     method: 'POST',
+                    headers: {
+                        'Authorization' : 'api-nyckel'
+                    },
                     body: formData
                 })
                 .then(resp=>resp.json())

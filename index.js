@@ -19,7 +19,7 @@ app.use((req, res, next)=>{
         if(APIKey === req.headers['authorization']){
             next();
         }else{
-            res.status(400).send({msg: 'declined'})
+            res.status(400).send({msg: 'You forgot your API key!'})
         }
         
     }else{
