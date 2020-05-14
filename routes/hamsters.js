@@ -81,7 +81,9 @@ router.get('/:id', async (req, res)=>{
     
 })
 //Skicka in uppdatering om att hamster vunnit eller förlorat en match.
-//OBS! Skicka bara in id + antingen wins eller defeats.
+//OBS! Skicka bara in id (från uri) + antingen wins eller defeats.
+//själva body på req params innehåller alltså bara {'wins':1} eller {'defeats':1}
+//siffran i body ignoreras, istället använder vi firestores inbyggda incrementfunktion så att man inte kan skicka fel
 router.put('/:id/results', async (req, res)=>{
     try{
         
